@@ -1,4 +1,4 @@
-name: CI (vitest)
+name: CI
 
 on:
   push:
@@ -7,8 +7,8 @@ on:
     branches: [ main ]
 
 jobs:
-  test:
-    name: Run Tests
+  vitest:
+    name: Vitest
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -19,7 +19,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Run vitest
-        run: npx vitest run --reporter=junit --outputFile=junit.xml
+        run: npm test
       - name: Upload test results
         uses: actions/upload-artifact@v4
         if: always()
