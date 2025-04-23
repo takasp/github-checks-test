@@ -26,8 +26,3 @@ jobs:
         with:
           name: test-results
           path: junit.xml
-      - name: Report test results
-        if: always()
-        uses: EnricoMi/publish-unit-test-result-action@v2
-        with:
-          junit_files: "junit.xml"
