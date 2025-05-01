@@ -5,14 +5,27 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ '*' ]
-  pull_request_target:
-    branches: [ '*' ]
 
 jobs:
+  check_and_skip:
+    runs-on: ubuntu-latest
+    outputs:
+      required: ${{ steps.filter.outputs.required }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: dorny/paths-filter@v3.0.2
+        id: filter
+        with:
+          filters: |
+            required:
+              - "!**/*.md"
   vitest:
+    needs: check_and_skip
     name: Vitest
     runs-on: ubuntu-latest
-    if: always()
+    if: ${{ needs.check_and_skip.outputs.required == 'true' }}
     steps:
       - uses: actions/checkout@v4
       - name: Use Node.js
