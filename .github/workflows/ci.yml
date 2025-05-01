@@ -37,12 +37,11 @@ jobs:
             echo "skip=true" >> $GITHUB_OUTPUT
             echo "Only .md files changed. Skipping tests."
           fi
-          echo test
-      - run: echo '${{ toJSON(steps.check_files) }}'
   vitest:
     needs: check_and_skip
     name: Vitest
     runs-on: ubuntu-latest
+    if: ${{ needs.check_and_skip.outputs.skip == 'false' }}
     steps:
       - run: echo '${{ toJSON(needs) }}'
       - uses: actions/checkout@v4
