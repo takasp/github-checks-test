@@ -17,3 +17,5 @@ npm test
 ## GitHub Actions
 
 Pull Request または main ブランチへの push で自動的にテストが実行され、Checks として結果が表示されます。
+
+fix readme
