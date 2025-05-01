@@ -10,7 +10,7 @@ jobs:
   check_and_skip:
     runs-on: ubuntu-latest
     outputs:
-      skip: ${{ steps.check.outputs.skip }}
+      skip: ${{ steps.check_files.outputs.skip }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -30,12 +30,12 @@ jobs:
           echo "github.sha: ${{ github.sha }}"
           changed_files=$(git diff --name-only "$COMPARE_SHA" "${{ github.sha }}")
           echo $changed_files
-          if [[ "$changed_files" =~ \.md$ ]]; then
-            echo "skip=true" >> $GITHUB_ENV
-            echo "Only .md files changed. Skipping tests."
-          else
-            echo "skip=false" >> $GITHUB_ENV
+          if echo "$changed_files" | grep -qv '\.md$'; then
+            echo "skip=false" >> $GITHUB_OUTPUT
             echo "Skip false"
+          else
+            echo "skip=true" >> $GITHUB_OUTPUT
+            echo "Only .md files changed. Skipping tests."
           fi
   vitest:
     needs: check_and_skip
@@ -43,6 +43,7 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ needs.check_and_skip.outputs.skip == 'false' }}
     steps:
+      - run: echo '${{ toJSON(needs) }}'
       - uses: actions/checkout@v4
       - name: Use Node.js
         uses: actions/setup-node@v4
