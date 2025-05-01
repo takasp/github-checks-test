@@ -15,33 +15,17 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Check changed files
-        id: check_files
-        run: |
-          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
-            COMPARE_SHA="${{ github.event.pull_request.base.sha }}"
-            echo "Comparing against base branch: $COMPARE_SHA"
-          else
-            COMPARE_SHA="${{ github.event.before }}"
-            echo "Comparing against previous commit: $COMPARE_SHA"
-          fi
-          echo "github.event.pull_request.base.sha: ${{ github.event.pull_request.base.sha }}"
-          echo "github.event.before: ${{ github.event.before }}"
-          echo "github.sha: ${{ github.sha }}"
-          changed_files=$(git diff --name-only "$COMPARE_SHA" "${{ github.sha }}")
-          echo $changed_files
-          if echo "$changed_files" | grep -qv '\.md$'; then
-            echo "skip=false" >> $GITHUB_OUTPUT
-            echo "Skip false"
-          else
-            echo "skip=true" >> $GITHUB_OUTPUT
-            echo "Only .md files changed. Skipping tests."
-          fi
+      - uses: dorny/paths-filter@v3.0.2
+        id: filter
+        with:
+          filters: |
+            required:
+              - "!**/*.md"
   vitest:
     needs: check_and_skip
     name: Vitest
     runs-on: ubuntu-latest
-    if: ${{ needs.check_and_skip.outputs.skip == 'false' }}
+    if: ${{ needs.check_and_skip.outputs.skip == 'true' }}
     steps:
       - uses: actions/checkout@v4
       - name: Use Node.js
