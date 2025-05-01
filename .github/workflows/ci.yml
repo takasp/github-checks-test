@@ -11,6 +11,8 @@ on:
 jobs:
   check_and_skip:
     runs-on: ubuntu-latest
+    outputs:
+      skip: ${{ steps.check.outputs.skip }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -37,7 +39,7 @@ jobs:
   vitest:
     name: Vitest
     runs-on: ubuntu-latest
-    if: ${{ needs.determine-changes.outputs.skip != 'true' }}
+    if: ${{ needs.check_and_skip.outputs.skip == 'false' }}
     steps:
       - uses: actions/checkout@v4
       - name: Use Node.js
