@@ -31,10 +31,10 @@ jobs:
           changed_files=$(git diff --name-only "$COMPARE_SHA" "${{ github.sha }}")
           echo $changed_files
           if echo "$changed_files" | grep -qv '\.md$'; then
-            echo "skip=false" >> $GITHUB_ENV
+            echo "skip=false" >> $GITHUB_OUTPUT
             echo "Skip false"
           else
-            echo "skip=true" >> $GITHUB_ENV
+            echo "skip=true" >> $GITHUB_OUTPUT
             echo "Only .md files changed. Skipping tests."
           fi
           echo test
