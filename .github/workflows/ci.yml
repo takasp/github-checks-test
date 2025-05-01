@@ -43,7 +43,6 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ needs.check_and_skip.outputs.skip == 'false' }}
     steps:
-      - run: echo '${{ toJSON(needs) }}'
       - uses: actions/checkout@v4
       - name: Use Node.js
         uses: actions/setup-node@v4
