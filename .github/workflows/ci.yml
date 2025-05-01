@@ -37,6 +37,7 @@ jobs:
             echo "skip=false" >> $GITHUB_ENV
             echo "Skip false"
           fi
+          echo test
   vitest:
     needs: check_and_skip
     name: Vitest
