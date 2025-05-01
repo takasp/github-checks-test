@@ -10,7 +10,7 @@ jobs:
   check_and_skip:
     runs-on: ubuntu-latest
     outputs:
-      skip: ${{ steps.check_files.outputs.skip }}
+      required: ${{ steps.filter.outputs.required }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -25,7 +25,7 @@ jobs:
     needs: check_and_skip
     name: Vitest
     runs-on: ubuntu-latest
-    if: ${{ needs.check_and_skip.outputs.skip == 'true' }}
+    if: ${{ needs.check_and_skip.outputs.required == 'true' }}
     steps:
       - uses: actions/checkout@v4
       - name: Use Node.js
