@@ -37,6 +37,7 @@ jobs:
             echo "Skip false"
           fi
   vitest:
+    needs: check_and_skip
     name: Vitest
     runs-on: ubuntu-latest
     if: ${{ needs.check_and_skip.outputs.skip == 'false' }}
