@@ -42,7 +42,6 @@ jobs:
     needs: check_and_skip
     name: Vitest
     runs-on: ubuntu-latest
-    # if: ${{ needs.check_and_skip.outputs.skip == 'false' }}
     steps:
       - run: echo ${{ needs.check_and_skip.outputs.skip }}
       - uses: actions/checkout@v4
