@@ -5,8 +5,6 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ '*' ]
-  pull_request_target:
-    branches: [ '*' ]
 
 jobs:
   check_and_skip:
@@ -27,6 +25,9 @@ jobs:
             COMPARE_SHA="${{ github.event.before }}"
             echo "Comparing against previous commit: $COMPARE_SHA"
           fi
+          echo "github.event.pull_request.base.sha: ${{ github.event.pull_request.base.sha }}"
+          echo "github.event.before: ${{ github.event.before }}"
+          echo "github.sha: ${{ github.sha }}"
           changed_files=$(git diff --name-only "$COMPARE_SHA" "${{ github.sha }}")
           echo $changed_files
           if [[ "$changed_files" =~ \.md$ ]]; then
