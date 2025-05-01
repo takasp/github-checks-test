@@ -10,7 +10,7 @@ jobs:
   check_and_skip:
     runs-on: ubuntu-latest
     outputs:
-      skip: ${{ steps.check.outputs.skip }}
+      skip: ${{ steps.check_files.outputs.skip }}
     steps:
       - uses: actions/checkout@v4
         with:
